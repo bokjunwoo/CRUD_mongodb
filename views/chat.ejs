@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅방</title>
+</head>
+<body>
+    <input type="text" id="msg" />
+    <button type="button" onclick="send()">전송</button>
+    <ul id="chat"></ul>
+</body>
+
+<script>
+    let ws = new WebSocket('ws://localhost:7777');
+
+    const inputEl = document.querySelector('#msg')
+    const chat = document.querySelector('#chat')
+
+    function send() {
+        const msg = inputEl.value;
+        ws.send(msg);
+        inputEl.value = '';
+    };
+
+    ws.onmessage = (event) => {
+        const msgEl = document.createElement('li');
+        msgEl.innerHTML = event.data;
+        chat.appendChild(msgEl);
+    };
+
+    // ws.onopen = (event) => {
+    //     ws.send('클라이언트입니다. 하이');
+    // };
+
+    // ws.onmessage = (event) => {
+    //     console.log('서버의 말', event.data);
+    // };
+
+    // ws.onerror = (event) => {
+    //     console.log('실패..')
+    // }
+</script>
+
+</html>
